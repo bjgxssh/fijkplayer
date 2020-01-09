@@ -261,7 +261,7 @@ class _FijkViewState extends State<FijkView> {
       settings: RouteSettings(isInitialRoute: false),
       pageBuilder: _fullScreenRoutePageBuilder,
     );
-
+    
     await SystemChrome.setEnabledSystemUIOverlays([]);
     bool changed = false;
     if (_vWidth >= _vHeight) {
@@ -271,12 +271,11 @@ class _FijkViewState extends State<FijkView> {
       if (MediaQuery.of(context).orientation == Orientation.landscape)
         changed = await FijkPlugin.setOrientationPortrait();
     }
-
     await Navigator.of(context).push(route);
     _fullScreen = false;
     widget.player.exitFullScreen();
-    await SystemChrome.setEnabledSystemUIOverlays(
-        [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+
+    await SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top, SystemUiOverlay.bottom]);
     if (changed) {
       if (_vWidth >= _vHeight) {
         await FijkPlugin.setOrientationPortrait();
@@ -463,9 +462,19 @@ class __InnerFijkViewState extends State<_InnerFijkView> {
   Widget buildTexture() {
     Widget tex = _textureId > 0 ? Texture(textureId: _textureId) : Container();
     if (_degree != 0 && _textureId > 0) {
-      return RotatedBox(
+      /*return RotatedBox(
         quarterTurns: _degree ~/ 90,
         child: tex,
+      );*/
+      //var trans = Matrix4.identity()..rotateZ(0-pi/2);
+      //var trans = Matrix4.identity()..rotateY(pi); //水平镜像
+      //var trans = Matrix4.identity()..rotateX(pi); //垂直镜像
+      //var trans = Matrix4.identity()..rotateZ(pi); //旋转360
+      var trans = Matrix4.identity()..scale(4.0); //放大2倍
+      return Transform(
+          transform: trans,
+          alignment: Alignment.center,
+          child: tex
       );
     }
     return tex;

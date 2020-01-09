@@ -531,4 +531,10 @@ class FijkPlayer extends ChangeNotifier implements ValueListenable<FijkValue> {
   String toString() {
     return 'FijkPlayer{id:$_playerId}';
   }
+
+  void setValueRotate(degree) {
+    _setValue(value.copyWith(rotate: degree));
+    FijkLog.i("$this rotate degree $degree");
+  }
+
 }
